@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    container_name: postgresql
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - DATABASE_HOST=${DB_HOST}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PG_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "80:80"
+    depends_on:
+      - db
